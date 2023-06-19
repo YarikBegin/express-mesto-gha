@@ -7,6 +7,7 @@ const { PORT = 3000 } = process.env.PORT || 4000;
 mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
   useNewUrlParser: true,
 }).then(() => {
+  // eslint-disable-next-line no-console
   console.log('connected to db');
 });
 
@@ -25,5 +26,6 @@ app.use('*', (req, res) => {
   res.status(404).json({ message: 'Неверный путь' });
 });
 app.listen(PORT, () => {
+  // eslint-disable-next-line no-console
   console.log(`server is running on port ${PORT}`);
 });

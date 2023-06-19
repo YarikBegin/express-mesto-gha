@@ -2,6 +2,7 @@ const User = require('../models/user');
 
 const getUsers = (req, res) => {
   User.find({}).then((users) => res.status(200).send(users)).catch((err) => {
+    // eslint-disable-next-line no-console
     console.log(err);
   });
 };
@@ -76,6 +77,7 @@ const updateAvatarById = (req, res) => {
       }
     })
     .catch((err) => {
+      // eslint-disable-next-line no-console
       console.log(err);
     });
 };

@@ -2,6 +2,7 @@ const Card = require('../models/card');
 
 const getCards = (req, res) => {
   Card.find({}).then((cards) => res.status(200).send(cards)).catch((err) => {
+    // eslint-disable-next-line no-console
     console.log(err);
   });
 };
@@ -42,7 +43,7 @@ const deleteCardById = (req, res) => {
     });
 };
 
-const likeCardById = (req, res) => {
+const likeCard = (req, res) => {
   const { cardId } = req.params;
 
   Card.findById(cardId)
@@ -52,7 +53,7 @@ const likeCardById = (req, res) => {
       } else {
         Card.findByIdAndUpdate(
           req.params.cardId,
-          { $addToset: { likes: req.user._id } },
+          { $addToSet: { likes: req.user._id } }, // добавить _id в массив, если его там нет
           { new: true },
         )
           .then((removedCard) => res.status(200).send(removedCard));
@@ -85,5 +86,5 @@ const dislikeCardById = (req, res) => {
 };
 
 module.exports = {
-  getCards, createCard, deleteCardById, likeCardById, dislikeCardById,
+  getCards, createCard, deleteCardById, likeCard, dislikeCardById,
 };
