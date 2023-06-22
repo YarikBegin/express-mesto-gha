@@ -22,9 +22,6 @@ app.use((req, res, next) => {
   next();
 });
 app.use(routes);
-app.use('*', (req, res) => {
-  res.status(404).json({ message: 'Неверный путь' });
-});
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console
   console.log(`server is running on port ${PORT}`);

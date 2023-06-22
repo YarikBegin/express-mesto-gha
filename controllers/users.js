@@ -1,9 +1,8 @@
 const User = require('../models/user');
 
 const getUsers = (req, res) => {
-  User.find({}).then((users) => res.status(200).send(users)).catch((err) => {
-    // eslint-disable-next-line no-console
-    console.log(err);
+  User.find({}).then((users) => res.send(users)).catch(() => {
+    res.status(500).send({ message: 'Непредвиденная ошибка' });
   });
 };
 
@@ -18,8 +17,12 @@ const getUserById = (req, res) => {
         res.status(200).send(user);
       }
     })
-    .catch(() => {
-      res.status(400).send({ message: `Переданы некорректные данные пользователя ${userId}` });
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        res.status(400).send({ message: `Получение пользователя с некорректным id: ${userId}` });
+      } else {
+        res.status(500).send({ message: 'Непредвиденная ошибка' });
+      }
     });
 };
 
@@ -36,7 +39,7 @@ const createUser = (req, res) => {
           message: 'Пожалуйста, проверьте правильность заполнения полей.',
         });
       } else {
-        res.status(500).send({ message: 'Ошибка сервера' });
+        res.status(500).send({ message: 'Непредвиденная ошибка' });
       }
     });
 };
@@ -59,7 +62,7 @@ const updateUserById = (req, res) => {
           message: 'Пожалуйста, проверьте правильность заполнения полей.',
         });
       } else {
-        res.status(500).send({ message: 'Ошибка сервера' });
+        res.status(500).send({ message: 'Непредвиденная ошибка' });
       }
     });
 };
@@ -77,8 +80,11 @@ const updateAvatarById = (req, res) => {
       }
     })
     .catch((err) => {
-      // eslint-disable-next-line no-console
-      console.log(err);
+      if (err.name === 'ValidationError') {
+        res.status(400).send({ message: 'Пожалуйста, проверьте правильность заполнения полей.' });
+      } else {
+        res.status(500).send({ message: 'Непредвиденная ошибка' });
+      }
     });
 };
 

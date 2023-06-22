@@ -1,9 +1,8 @@
 const Card = require('../models/card');
 
 const getCards = (req, res) => {
-  Card.find({}).then((cards) => res.status(200).send(cards)).catch((err) => {
-    // eslint-disable-next-line no-console
-    console.log(err);
+  Card.find({}).then((cards) => res.status(200).send(cards)).catch(() => {
+    res.status(500).send({ message: 'Непредвиденная ошибка' });
   });
 };
 
@@ -38,8 +37,12 @@ const deleteCardById = (req, res) => {
           .then((removedCard) => res.status(200).send(removedCard));
       }
     })
-    .catch(() => {
-      res.status(400).send({ message: `Карточки с указанным id: ${cardId} не существует в базе данных.` });
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        res.status(400).send({ message: `Карточки с указанным id: ${cardId} нет в базе данных.` });
+      } else {
+        res.status(500).send({ message: 'Непредвиденная ошибка' });
+      }
     });
 };
 
@@ -59,8 +62,12 @@ const likeCard = (req, res) => {
           .then((removedCard) => res.status(200).send(removedCard));
       }
     })
-    .catch(() => {
-      res.status(400).send({ message: `Карточки с указанным id: ${cardId} не существует в базе данных.` });
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        res.status(400).send({ message: `Карточки с указанным id: ${cardId} нет в базе данных.` });
+      } else {
+        res.status(500).send({ message: 'Непредвиденная ошибка' });
+      }
     });
 };
 
@@ -80,8 +87,12 @@ const dislikeCardById = (req, res) => {
           .then((removedCard) => res.status(200).send(removedCard));
       }
     })
-    .catch(() => {
-      res.status(400).send({ message: `Карточки с указанным id: ${cardId} не существует в базе данных.` });
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        res.status(400).send({ message: `Карточки с указанным id: ${cardId} нет в базе данных.` });
+      } else {
+        res.status(500).send({ message: 'Непредвиденная ошибка' });
+      }
     });
 };
 
