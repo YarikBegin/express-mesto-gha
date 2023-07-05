@@ -25,8 +25,8 @@ const createCard = (req, res, next) => {
     })
     .catch((error) => {
       if (error.name === 'ValidationError') {
-        throw new ValidationError(`Пожалуйста, проверьте правильность заполнения полей:
-        ${Object.values(error.errors).map((err) => `${err.message.slice(5)}`).join(' ')}`);
+        next(new ValidationError(`Пожалуйста, проверьте правильность заполнения полей:
+        ${Object.values(error.errors).map((err) => `${err.message.slice(5)}`).join(' ')}`));
       } else {
         next(error);
       }
@@ -53,7 +53,7 @@ const deleteCard = (req, res, next) => {
     })
     .catch((error) => {
       if (error.name === 'CastError') {
-        throw new BadRequestError(`Карточка с указанным id: ${cardId} не существует в базе данных.`);
+        next(new BadRequestError(`Карточка с указанным id: ${cardId} не существует в базе данных.`));
       } else {
         next(error);
       }
@@ -81,7 +81,7 @@ const likeCard = (req, res, next) => {
     })
     .catch((error) => {
       if (error.name === 'CastError') {
-        throw new BadRequestError(`Карточка с указанным id: ${cardId} не существует в базе данных.`);
+        next(new BadRequestError(`Карточка с указанным id: ${cardId} не существует в базе данных.`));
       } else {
         next(error);
       }
@@ -109,7 +109,7 @@ const dislikeCard = (req, res, next) => {
     })
     .catch((error) => {
       if (error.name === 'CastError') {
-        throw new BadRequestError(`Карточка с указанным id: ${cardId} не существует в базе данных.`);
+        next(new BadRequestError(`Карточка с указанным id: ${cardId} не существует в базе данных.`));
       } else {
         next(error);
       }
